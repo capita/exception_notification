@@ -43,7 +43,7 @@ class ExceptionNotification::Notifier < ActionMailer::Base
     content_type "text/plain"   
     subject    "#{email_prefix} #{exception.class}: #{exception.message.inspect}"
     
-    if defined?(Rails)
+    if defined?(Rails) && Rails.logger
       Rails.logger.error "#{exception.class}: #{exception.message.inspect}"
     end
 
@@ -60,7 +60,7 @@ class ExceptionNotification::Notifier < ActionMailer::Base
 
     subject    "#{email_prefix}#{source} (#{exception.class}) #{exception.message.inspect}"
     
-    if defined?(Rails)
+    if defined?(Rails) && Rails.logger
       Rails.logger.error "#{source} (#{exception.class}) #{exception.message.inspect}. Backtrace:\n#{sanitize_backtrace(exception.backtrace)}"
     end
 
