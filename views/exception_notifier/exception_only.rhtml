@@ -5,3 +5,9 @@ A <%= @exception.class %> occurred on <%= @hostname %>
 
 Backtrace:
 <%= @backtrace.join "\n" %>
+
+<% @subsections.each do |title, content| %>
+<%= title %>:
+<%= content %>
+
+<% end %>

@@ -24,6 +24,10 @@ allows you to deliver any exception from any Ruby object by calling `report_exce
       raise err
     end
   end
+  
+You can also specify additional sections via the optional second argument, which is expected to
+be a hash in the format `"Section title" => "Additonal data as a string". Those will be included
+in the mail below the stacktrace.
 
 == Usage
 

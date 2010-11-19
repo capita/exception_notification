@@ -39,7 +39,9 @@ class ExceptionNotification::Notifier < ActionMailer::Base
   def self.reloadable?() false end
     
   # Delivers only the given exception including backtrace without the need to hold a complete controller & request
-  def exception_only(exception)
+  # Optionally, you can give a hash of additonal data with "Section title" => "A string containing data", which 
+  # will also be included in the mail
+  def exception_only(exception, subsections={})
     content_type "text/plain"   
     subject    "#{email_prefix} #{exception.class}: #{exception.message.inspect}"
     
@@ -50,7 +52,7 @@ class ExceptionNotification::Notifier < ActionMailer::Base
     recipients exception_recipients
     from       sender_address
 
-    body       :exception => exception, :backtrace => sanitize_backtrace(exception.backtrace), :hostname => `hostname`.strip.chomp
+    body       :exception => exception, :backtrace => sanitize_backtrace(exception.backtrace), :hostname => `hostname`.strip.chomp, :subsections => subsections
   end
 
   # Deliver the whole exception notification from a failed rails request including controller, exception etc.

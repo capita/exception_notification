@@ -8,7 +8,7 @@ end
 
 class Object
   # Allows for notifying about any exception from any object
-  def report_exception(exception)
-    ExceptionNotification::Notifier.deliver_exception_only(exception)
+  def report_exception(exception, subsections={})
+    ExceptionNotification::Notifier.deliver_exception_only(exception, subsections)
   end
 end
