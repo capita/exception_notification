@@ -5,3 +5,10 @@ module ExceptionNotification
   #autoload :NotifierHelper, 'exception_notification/notifier_helper'
   autoload :ConsiderLocal,  'exception_notification/consider_local'
 end
+
+class Object
+  # Allows for notifying about any exception from any object
+  def report_exception(exception)
+    ExceptionNotification::Notifier.deliver_exception_only(exception)
+  end
+end

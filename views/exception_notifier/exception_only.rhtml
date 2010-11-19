@@ -1,0 +1,7 @@
+A <%= @exception.class %> occurred on <%= @hostname %>
+
+  <%= @exception.message %>
+  <%= @backtrace.first %>
+
+Backtrace:
+<%= @backtrace.join "\n" %>

@@ -37,12 +37,32 @@ class ExceptionNotification::Notifier < ActionMailer::Base
   cattr_accessor :sections
 
   def self.reloadable?() false end
+    
+  # Delivers only the given exception including backtrace without the need to hold a complete controller & request
+  def exception_only(exception)
+    content_type "text/plain"   
+    subject    "#{email_prefix} #{exception.class}: #{exception.message.inspect}"
+    
+    if defined?(Rails)
+      Rails.logger.error "#{exception.class}: #{exception.message.inspect}"
+    end
 
+    recipients exception_recipients
+    from       sender_address
+
+    body       :exception => exception, :backtrace => sanitize_backtrace(exception.backtrace), :hostname => `hostname`.strip.chomp
+  end
+
+  # Deliver the whole exception notification from a failed rails request including controller, exception etc.
   def exception_notification(exception, controller, request, data={})
     source = self.class.exception_source(controller)
     content_type "text/plain"
 
     subject    "#{email_prefix}#{source} (#{exception.class}) #{exception.message.inspect}"
+    
+    if defined?(Rails)
+      Rails.logger.error "#{source} (#{exception.class}) #{exception.message.inspect}. Backtrace:\n#{sanitize_backtrace(exception.backtrace)}"
+    end
 
     recipients exception_recipients
     from       sender_address

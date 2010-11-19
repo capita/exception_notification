@@ -11,6 +11,20 @@ application. The plugin is configurable, allowing programmers to specify:
 The email includes information about the current request, session, and
 environment, and also gives a backtrace of the exception.
 
+== About this fork
+
+This fork, apart from some other minor tweaks, adds another notifier which 
+allows you to deliver any exception from any Ruby object by calling `report_exception(err)`:
+
+  class Foo
+    def bar
+      raise "something went wrong"
+    rescue => err
+      report_exception(err)
+      raise err
+    end
+  end
+
 == Usage
 
 First, include the ExceptionNotifiable mixin in whichever controller you want
