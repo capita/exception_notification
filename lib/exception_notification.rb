@@ -4,11 +4,9 @@ module ExceptionNotification
   autoload :Notifier,       'exception_notification/notifier'
   #autoload :NotifierHelper, 'exception_notification/notifier_helper'
   autoload :ConsiderLocal,  'exception_notification/consider_local'
+  autoload :GenericNotifier, 'exception_notification/generic_notifier'  
+  autoload :ExceptionContext, 'exception_notification/exception_context'  
 end
 
-class Object
-  # Allows for notifying about any exception from any object
-  def report_exception(exception, subsections={})
-    ExceptionNotification::Notifier.deliver_exception_only(exception, subsections)
-  end
-end
+Object.send(:include, ExceptionNotification::GenericNotifier)
+Exception.send(:include, ExceptionNotification::ExceptionContext)
